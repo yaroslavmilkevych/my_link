@@ -1,8 +1,10 @@
 {
-  "name": "classic-snake",
+  "name": "polly-word",
   "private": true,
   "type": "module",
   "scripts": {
+    "build": "node ./scripts/generate-config.mjs",
+    "prestart": "npm run build",
     "start": "python3 -m http.server 4173",
     "test": "node --test"
   }

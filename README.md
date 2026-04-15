@@ -1,44 +1,94 @@
-# Yaroslav Milkevich Personal Site
+# Polly Word
 
-Статический личный сайт Ярослава Милькевича с акцентом на тестирование и современный визуальный стиль.
+PWA для изучения польского языка с четырьмя основными разделами:
 
-## Локальный запуск
+- `Новые слова` — стартовый словарь польских слов с темами, переводом и примерами
+- `Игра со словами` — карточки-стикеры, которые переворачиваются по клику
+- `Архив слов` — изученные слова, повторение и мини-тест
+- `Общение с ИИ` — учебный rule-based ассистент для диалога и исправления перевода
 
-Из корня проекта:
+## Что уже реализовано
+
+- мобильный интерфейс с нижней навигацией
+- экран входа и регистрации
+- локальный демо-режим без внешних ключей
+- архитектура под `Supabase Auth` и таблицы прогресса
+- сохранение прогресса, архива, повторений и чата
+- `manifest.webmanifest` и `service worker` для PWA
+
+## Быстрый запуск
+
+В проекте нет обязательной сборки. Достаточно открыть статический сервер из корня:
 
 ```bash
-python3 -m http.server 4180
+python3 -m http.server 4173
 ```
 
-Затем откройте `http://localhost:4180`.
+Затем открыть [http://localhost:4173](http://localhost:4173).
 
-## Быстрый публичный деплой
+Перед локальным запуском можно сгенерировать runtime-конфиг:
 
-Проект подготовлен как обычный статический сайт. Можно загрузить его без сборки.
+```bash
+npm run build
+```
 
-### Вариант 1: Vercel
+## Подключение Supabase
 
-1. Откройте [vercel.com](https://vercel.com/).
-2. Создайте новый проект и загрузите папку проекта.
-3. Framework preset можно оставить как `Other`.
-4. Build command не нужен.
-5. Output directory не нужна.
-6. После публикации Vercel выдаст публичную ссылку.
+По умолчанию приложение работает в локальном режиме и хранит данные в `localStorage`.
+Чтобы перейти на `Supabase`, нужно:
 
-### Вариант 2: Netlify
+1. Создать проект в Supabase.
+2. Выполнить SQL из [supabase/schema.sql](/Users/dell/Documents/New%20project/supabase/schema.sql).
+3. Затем выполнить seed из [supabase/seed.sql](/Users/dell/Documents/New%20project/supabase/seed.sql).
+4. Перед деплоем или локальным запуском передать переменные окружения:
 
-1. Откройте [netlify.com](https://www.netlify.com/).
-2. Выберите деплой через drag-and-drop или импорт репозитория.
-3. Если загружаете вручную, можно отправить весь проект целиком.
-4. Build command не нужен.
-5. Publish directory: `.`
-6. После публикации Netlify выдаст публичную ссылку.
+```bash
+SUPABASE_URL=https://your-project.supabase.co \
+SUPABASE_ANON_KEY=your-anon-key \
+npm run build
+```
+
+После этого приложение попытается использовать `Supabase Auth`, подтянет слова из таблицы `words` и будет создавать запись в `profiles` при регистрации или входе. Если сеть или SDK недоступны, интерфейс автоматически останется в локальном режиме.
+
+## Публикация в интернет
+
+Самый простой путь сейчас — `Netlify` или `Vercel`.
+
+### Netlify
+
+1. Подключить репозиторий или загрузить проект.
+2. Build command: `npm run build`
+3. Publish directory: `.`
+4. В переменные окружения добавить:
+   `SUPABASE_URL`
+   `SUPABASE_ANON_KEY`
+
+### Vercel
+
+1. Импортировать проект как `Other`.
+2. Build command: `npm run build`
+3. Output directory: `.`
+4. В Environment Variables добавить:
+   `SUPABASE_URL`
+   `SUPABASE_ANON_KEY`
+
+При каждом деплое будет автоматически генерироваться [config.local.js](/Users/dell/Documents/New%20project/config.local.js) с нужными значениями. Если переменные не заданы, приложение остается в локальном режиме, но все равно публикуется и работает.
 
 ## Структура
 
-- `index.html` — контент и структура страницы
-- `styles.css` — визуальный стиль, анимации и адаптивность
+- [index.html](/Users/dell/Documents/New%20project/index.html) — каркас приложения
+- [styles.css](/Users/dell/Documents/New%20project/styles.css) — визуальный стиль и адаптивность
+- [src/app.js](/Users/dell/Documents/New%20project/src/app.js) — основная логика интерфейса
+- [src/storage.js](/Users/dell/Documents/New%20project/src/storage.js) — local storage и адаптер под Supabase
+- [src/tutor-service.js](/Users/dell/Documents/New%20project/src/tutor-service.js) — учебный ассистент
+- [src/words-data.js](/Users/dell/Documents/New%20project/src/words-data.js) — стартовый словарь
+- [sw.js](/Users/dell/Documents/New%20project/sw.js) — офлайн-кэш PWA
 
-## Примечание
+## Тесты
 
-Секция контакта намеренно не содержит адресов и явных реквизитов, как и было запрошено.
+В репозитории подготовлены:
+
+- `Playwright`-сценарии для регистрации, карточек, архива и чата
+- `node:test`-тесты для логики прогресса и tutor-сервиса
+
+В текущей среде у меня не было доступных `node`, `npm` и браузера Playwright, поэтому автоматический прогон был ограничен.

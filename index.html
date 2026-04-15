@@ -3,205 +3,290 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Ярослав Милькевич | Тестирование</title>
     <meta
       name="description"
-      content="Личный сайт Ярослава Милькевича: тестирование цифровых продуктов, качество интерфейсов и продуманная QA-экспертиза."
+      content="PWA для изучения польского языка: новые слова, карточки-стикеры, архив и учебный чат."
     />
+    <meta name="theme-color" content="#f55d3e" />
+    <title>Polly Word | Польский каждый день</title>
+    <link rel="manifest" href="./manifest.webmanifest" />
+    <link rel="icon" href="./icons/icon-app.svg" type="image/svg+xml" />
     <link rel="stylesheet" href="./styles.css" />
+    <script src="./config.local.js"></script>
   </head>
   <body>
-    <div class="page-glow page-glow--left" aria-hidden="true"></div>
-    <div class="page-glow page-glow--right" aria-hidden="true"></div>
+    <div class="page-orb page-orb--left" aria-hidden="true"></div>
+    <div class="page-orb page-orb--right" aria-hidden="true"></div>
 
-    <main class="page-shell">
-      <section class="hero">
-        <nav class="topbar" aria-label="Основная навигация">
-          <a class="brand" href="#top">YM</a>
-          <div class="topbar__links">
-            <a href="#about">Обо мне</a>
-            <a href="#focus">Фокус</a>
-            <a href="#cases">Подход</a>
-            <a href="#contact">Контакт</a>
-          </div>
-        </nav>
+    <div class="app-shell">
+      <header class="app-header">
+        <div>
+          <p class="eyebrow">Polly Word</p>
+          <h1>Польский язык через карточки, повторение и практику.</h1>
+        </div>
 
-        <div class="hero__content" id="top">
-          <div class="hero__copy">
-            <p class="eyebrow">Личный сайт</p>
-            <h1>Ярослав Милькевич</h1>
-            <p class="hero__lead">
-              Тестирование, которое делает цифровой продукт чище, быстрее и
-              увереннее в каждом релизе.
+        <div class="header-actions">
+          <button class="secondary-button" id="install-button" type="button" hidden>
+            Установить PWA
+          </button>
+          <button class="secondary-button" id="logout-button" type="button" hidden>
+            Выйти
+          </button>
+        </div>
+      </header>
+
+      <main class="app-layout">
+        <section class="auth-panel" id="auth-panel">
+          <div class="panel card-panel">
+            <p class="eyebrow">Вход</p>
+            <h2>Начнем учить польский</h2>
+            <p class="support-copy">
+              Можно использовать локальный демо-режим без настроенного
+              Supabase. Если позже подключить ключи, прогресс и аккаунты будут
+              работать через реальную синхронизацию.
             </p>
 
-            <div class="hero__actions">
-              <a class="button button--primary" href="#contact">Обсудить проект</a>
-              <a class="button button--ghost" href="#focus">Смотреть экспертизу</a>
-            </div>
+            <form class="auth-form" id="auth-form">
+              <label>
+                Email
+                <input id="email-input" name="email" type="email" required />
+              </label>
+              <label>
+                Пароль
+                <input
+                  id="password-input"
+                  name="password"
+                  type="password"
+                  minlength="6"
+                  required
+                />
+              </label>
 
-            <ul class="hero__metrics" aria-label="Ключевые акценты">
-              <li>
-                <strong>QA Mindset</strong>
-                <span>От требований до финальной приёмки</span>
-              </li>
-              <li>
-                <strong>UX + Logic</strong>
-                <span>Проверка сценариев, интерфейсов и критических путей</span>
-              </li>
-              <li>
-                <strong>Release Ready</strong>
-                <span>Фокус на рисках, стабильности и доверии к продукту</span>
-              </li>
-            </ul>
+              <div class="auth-form__actions">
+                <button class="primary-button" type="submit" id="login-button">
+                  Войти
+                </button>
+                <button
+                  class="secondary-button"
+                  type="button"
+                  id="register-button"
+                >
+                  Зарегистрироваться
+                </button>
+              </div>
+            </form>
+
+            <p class="status-banner" id="auth-status" role="status">
+              Демо-режим включен: можно зарегистрироваться и сохранить прогресс
+              локально.
+            </p>
           </div>
 
-          <aside class="hero__card">
-            <p class="hero__card-label">Сейчас в фокусе</p>
-            <div class="signal-card">
-              <span class="signal-card__dot"></span>
-              <div>
-                <strong>Тестирование веб-продуктов</strong>
-                <p>
-                  Функциональные проверки, визуальная консистентность, сценарии
-                  регресса и точечный контроль качества перед запуском.
-                </p>
+          <div class="panel highlight-panel">
+            <p class="eyebrow">Что внутри</p>
+            <ul class="feature-list">
+              <li>Новые слова с темами и примерами</li>
+              <li>Стикеры, которые переворачиваются по клику</li>
+              <li>Архив изученных слов с повторением и мини-тестом</li>
+              <li>Учебный чат на польском с исправлением перевода</li>
+            </ul>
+          </div>
+        </section>
+
+        <section class="dashboard" id="dashboard" hidden>
+          <aside class="dashboard-sidebar panel">
+            <div class="profile-card">
+              <p class="eyebrow">Профиль</p>
+              <h2 id="profile-name">Student</h2>
+              <p class="support-copy" id="profile-subtitle">
+                Синхронизация прогресса включена
+              </p>
+            </div>
+
+            <div class="progress-card">
+              <div class="stat-tile">
+                <span>Новых слов</span>
+                <strong id="new-count">0</strong>
+              </div>
+              <div class="stat-tile">
+                <span>В архиве</span>
+                <strong id="archived-count">0</strong>
+              </div>
+              <div class="stat-tile">
+                <span>Сессий повторения</span>
+                <strong id="review-count">0</strong>
               </div>
             </div>
 
-            <div class="hero__stack">
-              <span>Manual QA</span>
-              <span>Regression</span>
-              <span>Smoke</span>
-              <span>UI Review</span>
-              <span>Bug Reports</span>
-              <span>Checklists</span>
+            <div class="mode-card">
+              <p class="eyebrow">Режим</p>
+              <p class="support-copy" id="sync-mode">
+                Локальный режим с готовой архитектурой под Supabase.
+              </p>
             </div>
           </aside>
-        </div>
-      </section>
 
-      <section class="ticker" aria-label="Ключевые направления">
-        <div class="ticker__track">
-          <span>Проверка логики</span>
-          <span>Стабильность релизов</span>
-          <span>Тест-дизайн</span>
-          <span>Качество интерфейса</span>
-          <span>Критические сценарии</span>
-          <span>Бережная коммуникация с командой</span>
-        </div>
-      </section>
+          <section class="dashboard-content">
+            <section class="tab-panel" id="tab-words" data-tab-panel="words">
+              <div class="section-head">
+                <div>
+                  <p class="eyebrow">Новые слова</p>
+                  <h2>Стартовый польский словарь</h2>
+                </div>
+                <label class="theme-filter">
+                  Тема
+                  <select id="topic-filter">
+                    <option value="all">Все темы</option>
+                  </select>
+                </label>
+              </div>
 
-      <section class="about section-grid" id="about">
-        <div>
-          <p class="eyebrow">Обо мне</p>
-          <h2>Помогаю находить слабые места до того, как их увидит пользователь.</h2>
-        </div>
+              <div class="word-list" id="word-list"></div>
+            </section>
 
-        <div class="section-copy">
-          <p>
-            Ярослав Милькевич работает на стыке внимательности, системного
-            мышления и понимания пользовательского опыта. В тестировании важны
-            не только баги, но и то, насколько уверенно продукт ощущается в
-            реальном использовании.
-          </p>
-          <p>
-            Поэтому мой подход сочетает проверку логики, сценариев и визуального
-            слоя, чтобы команда выпускала продукт с понятным уровнем качества.
-          </p>
-        </div>
-      </section>
+            <section
+              class="tab-panel"
+              id="tab-game"
+              data-tab-panel="game"
+              hidden
+            >
+              <div class="section-head">
+                <div>
+                  <p class="eyebrow">Игра со словами</p>
+                  <h2>Кликай по стикеру и проверяй перевод</h2>
+                </div>
+                <p class="support-copy">
+                  После переворота выбери, знаешь ли ты слово.
+                </p>
+              </div>
 
-      <section class="focus" id="focus">
-        <div class="section-heading">
-          <p class="eyebrow">Экспертиза</p>
-          <h2>Фокус на тех местах, где качество действительно влияет на результат.</h2>
-        </div>
+              <div class="sticker-grid" id="sticker-grid"></div>
+            </section>
 
-        <div class="card-grid">
-          <article class="info-card">
-            <span class="info-card__index">01</span>
-            <h3>Функциональное тестирование</h3>
-            <p>
-              Проверка сценариев, валидации, переходов, edge cases и логики
-              работы интерфейса.
-            </p>
-          </article>
+            <section
+              class="tab-panel"
+              id="tab-archive"
+              data-tab-panel="archive"
+              hidden
+            >
+              <div class="section-head">
+                <div>
+                  <p class="eyebrow">Архив слов</p>
+                  <h2>Изученные слова и повторение</h2>
+                </div>
 
-          <article class="info-card">
-            <span class="info-card__index">02</span>
-            <h3>Регрессионный контроль</h3>
-            <p>
-              Быстрое выявление проблем после изменений, чтобы релизы не ломали
-              уже работающие части продукта.
-            </p>
-          </article>
+                <div class="archive-toggle" role="tablist" aria-label="Режим архива">
+                  <button
+                    class="chip-button is-active"
+                    type="button"
+                    data-archive-mode="cards"
+                  >
+                    Стикеры
+                  </button>
+                  <button
+                    class="chip-button"
+                    type="button"
+                    data-archive-mode="quiz"
+                  >
+                    Мини-тест
+                  </button>
+                </div>
+              </div>
 
-          <article class="info-card">
-            <span class="info-card__index">03</span>
-            <h3>Тестирование интерфейсов</h3>
-            <p>
-              Внимание к состояниям, читабельности, адаптивности и общему
-              ощущению аккуратности в UI.
-            </p>
-          </article>
-        </div>
-      </section>
+              <div class="archive-layout">
+                <div class="archive-list panel">
+                  <h3>Изученные слова</h3>
+                  <div id="archive-word-list"></div>
+                </div>
 
-      <section class="cases" id="cases">
-        <div class="section-heading">
-          <p class="eyebrow">Подход</p>
-          <h2>Как выглядит работа с качеством в практическом режиме.</h2>
-        </div>
+                <div class="archive-practice">
+                  <div id="archive-cards" class="sticker-grid sticker-grid--compact"></div>
 
-        <div class="timeline">
-          <article class="timeline__item">
-            <span class="timeline__step">Шаг 1</span>
-            <h3>Собираю критические пользовательские маршруты</h3>
-            <p>
-              Определяю сценарии, где ошибка будет стоить продукту доверия,
-              конверсии или стабильности.
-            </p>
-          </article>
+                  <div class="panel quiz-panel" id="quiz-panel" hidden>
+                    <h3>Мини-тест</h3>
+                    <p class="support-copy" id="quiz-question">
+                      Выбери правильный перевод.
+                    </p>
+                    <div class="quiz-options" id="quiz-options"></div>
+                    <p class="status-banner" id="quiz-feedback" role="status">
+                      Готово к повторению.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </section>
 
-          <article class="timeline__item">
-            <span class="timeline__step">Шаг 2</span>
-            <h3>Проверяю логику и визуальное поведение</h3>
-            <p>
-              Смотрю не только на “работает / не работает”, но и на то, насколько
-              интерфейс ведёт себя последовательно и понятно.
-            </p>
-          </article>
+            <section class="tab-panel" id="tab-chat" data-tab-panel="chat" hidden>
+              <div class="section-head">
+                <div>
+                  <p class="eyebrow">Общение с ИИ</p>
+                  <h2>Учебный ассистент для польского</h2>
+                </div>
 
-          <article class="timeline__item">
-            <span class="timeline__step">Шаг 3</span>
-            <h3>Передаю понятные замечания команде</h3>
-            <p>
-              Формулирую выводы так, чтобы их было удобно брать в работу и быстро
-              исправлять без лишней неоднозначности.
-            </p>
-          </article>
-        </div>
-      </section>
+                <label class="theme-filter">
+                  Режим
+                  <select id="chat-mode-select">
+                    <option value="translation">Перевод и исправление</option>
+                    <option value="dialogue">Диалог на польском</option>
+                  </select>
+                </label>
+              </div>
 
-      <section class="contact" id="contact">
-        <div class="contact__panel">
-          <div>
-            <p class="eyebrow">Контакт</p>
-            <h2>Открыт к новым задачам в тестировании и улучшении качества продукта.</h2>
-          </div>
+              <div class="chat-layout">
+                <section class="panel tutor-panel">
+                  <div class="tutor-panel__header">
+                    <div>
+                      <h3>Как это работает</h3>
+                      <p class="support-copy">
+                        Это учебный ассистент на шаблонах и правилах. Он
+                        помогает тренировать частые конструкции и объясняет
+                        типовые ошибки.
+                      </p>
+                    </div>
+                    <button class="secondary-button" id="next-exercise-button" type="button">
+                      Следующее задание
+                    </button>
+                  </div>
+                  <div class="exercise-card" id="exercise-card"></div>
+                </section>
 
-          <div class="contact__meta">
-            <p>
-              Связаться можно через личные рабочие каналы и прямую коммуникацию
-              по проекту. Адреса на сайте намеренно не размещены.
-            </p>
-            <a class="button button--primary" href="#top">
-              Запросить связь
-            </a>
-          </div>
-        </div>
-      </section>
-    </main>
+                <section class="panel chat-panel">
+                  <div class="chat-log" id="chat-log" aria-live="polite"></div>
+
+                  <form class="chat-form" id="chat-form">
+                    <label class="sr-only" for="chat-input">Ответ</label>
+                    <textarea
+                      id="chat-input"
+                      rows="3"
+                      placeholder="Напиши перевод или ответ на польском"
+                    ></textarea>
+                    <button class="primary-button" type="submit">
+                      Отправить
+                    </button>
+                  </form>
+                </section>
+              </div>
+            </section>
+          </section>
+        </section>
+      </main>
+
+      <nav class="bottom-nav" id="bottom-nav" aria-label="Основное меню" hidden>
+        <button class="bottom-nav__item is-active" type="button" data-tab="words">
+          Новые слова
+        </button>
+        <button class="bottom-nav__item" type="button" data-tab="game">
+          Игра
+        </button>
+        <button class="bottom-nav__item" type="button" data-tab="archive">
+          Архив
+        </button>
+        <button class="bottom-nav__item" type="button" data-tab="chat">
+          ИИ
+        </button>
+      </nav>
+    </div>
+
+    <script type="module" src="./src/app.js"></script>
   </body>
 </html>

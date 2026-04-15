@@ -1,0 +1,24 @@
+{
+  "name": "Polly Word",
+  "short_name": "Polly Word",
+  "lang": "ru",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#fff7ed",
+  "theme_color": "#f55d3e",
+  "description": "Изучение польского языка через слова, карточки, архив и учебный чат.",
+  "icons": [
+    {
+      "src": "./icons/icon-app.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "./icons/icon-maskable.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "maskable"
+    }
+  ]
+}
